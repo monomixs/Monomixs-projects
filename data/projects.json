@@ -1,0 +1,22 @@
+[
+  {
+    "title": "sign in page.",
+    "previewDescription": "hello",
+    "description": "this is a simple sign in page. this page only uses HTML and CSS. if you want to use the project to add it to your own project, you can just download it but you have to give credits to monomixs. you can customize this project in any way you want.",
+    "images": [
+      "/uploads/images/Screenshot2025-05-06180827.png-1746570691412-480280386.png",
+      "/uploads/images/Screenshot2025-05-06202112_1746577305137.png",
+      "/uploads/images/Screenshot2025-05-06211203_1746580347908.png"
+    ],
+    "files": [
+      {
+        "path": "/uploads/projects/style.css-1746570735335-672279246.css",
+        "name": "style.css"
+      },
+      {
+        "path": "/uploads/projects/inde.html-1746570735336-439796168.html",
+        "name": "inde.html"
+      }
+    ]
+  }
+]
