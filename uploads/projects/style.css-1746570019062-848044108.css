@@ -1,0 +1,129 @@
+body {
+      background-image: url(https://firefox-settings-attachments.cdn.mozilla.net/main-workspace/newtab-wallpapers-v2/e1108381-5c19-4cb4-a630-69f9e45503fb.avif);
+      background-size: cover;
+      background-position: center center;
+      background-repeat: no-repeat;
+      background-attachment: fixed;
+}
+    
+    div#panel {
+      user-select: none;
+      font-family: Comic Neue;
+      font-size: 38px;
+      background-color: #ffffff4a;
+      width: 400px;
+      height: 300px;
+      backdrop-filter: blur(50px);
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      align-items: center;
+      padding-top: 30px;
+      border: 5px solid #ffffff83;
+      border-radius: 20px;
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+}
+    
+    div#panel h1 {
+      color: #7cbcef;
+      font-size: 38px;
+      margin-top: 0;
+      margin-bottom: 20px;
+      transition: ease-in-out 0.5s;
+}
+
+div#panel h1:hover {
+    color: black;
+    font-size: 50px;
+    margin-bottom: 6px;
+}
+
+    
+    .text {
+        font-family: Comic Neue;
+        font-weight: bold;
+        width: 200px;
+        height: 40px;
+        border-radius: 7px;
+        border: none;
+        transition: ease-in-out 0.3s;
+        margin-bottom: 15px;
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+        background-color: #ffffff64;
+        border-bottom: 5px solid #ffffff00;
+        padding-top: 5px;
+        box-sizing: border-box; 
+        font-size: 25px;
+}
+    
+    .text:focus {
+        box-shadow: 0 0 20px #00ffff, 0 0 30px #00ffffa0;
+        z-index: 99;
+        background-color: rgba(255, 255, 255, 0.391);
+        border-bottom: 5px solid #00dede;
+        outline: none;
+        width: 270px;
+        height: 40px;
+        border-radius: 7px;
+        margin-left: auto;
+        margin-right: auto;
+        padding-top: 5px;
+        box-sizing: border-box;
+}
+    
+    .text:focus:hover {
+        box-shadow: 0 0 20px #00ffff, 0 0 30px #00ffffa0;
+        z-index: 99;
+        background-color: #ffffff64;
+        border-bottom: 5px solid #00dede;
+        outline: none;
+        width: 270px;
+        height: 40px;
+        border-radius: 7px;
+        margin-left: auto;
+        margin-right: auto;
+        padding-top: 5px;
+        box-sizing: border-box;
+}
+    
+    .text:hover {
+        width: 250px;
+        border-bottom: 5px solid #0000006b;
+        padding-top: 5px;
+        box-sizing: border-box;
+        box-shadow: 0 0 20px #000000af;
+        z-index: 99;
+}
+      
+#panel form input[type="submit"],
+#sub {
+        font-weight: bold;
+        font-family: Comic Neue;
+        margin-top: 20px;
+        padding: 10px 20px;
+        font-size: 25px;
+        cursor: pointer;
+        border-radius: 10px;
+        width: 200px;
+        height: 50px;
+        border: none;
+        background-color: #ffffff00;
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+        position: relative;
+        transition: all 0.3s ease;
+        box-shadow: 0 0 0 transparent;
+}
+
+#panel form input[type="submit"]:hover,
+#sub:hover {
+        background-color: #ffffffaa;
+        transform: scale(1.05);
+        box-shadow: 0 0 35px #00ffff, 0 0 30px #00ffffa0, 0 0 10px black;
+}
