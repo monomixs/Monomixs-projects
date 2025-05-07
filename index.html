@@ -1,0 +1,751 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Monomixs Projects</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/themes.css">
+    <meta name="description" content="A showcase of my personal projects and work">
+</head>
+<body data-theme="device">
+    <!-- Toast notifications container -->
+    <div id="toastContainer" class="toast-container"></div>
+    
+    <!-- Floating action button for adding projects (visible when admin is logged in) -->
+    <button id="floatingAddBtn" class="floating-action-btn admin-only hidden" onclick="openAddProject()">
+        <svg class="icon"><use href="assets/icons.svg#plus"></use></svg>
+    </button>
+    
+    <header>
+        <div class="container">
+            <h1>Monomixs Projects</h1>
+            <nav>
+                <button id="profileBtn" class="icon-btn" aria-label="Contact Me">
+                    <svg class="icon"><use href="assets/icons.svg#user"></use></svg>
+                </button>
+                <button id="settingsBtn" class="icon-btn" aria-label="Settings">
+                    <svg class="icon"><use href="assets/icons.svg#settings"></use></svg>
+                </button>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <div class="container">
+            <div class="search-container">
+                <div class="search-field">
+                    <input type="text" id="searchInput" placeholder="Search projects..." aria-label="Search projects">
+                    <button id="clearSearch" class="clear-search-btn" aria-label="Clear search">
+                        <svg class="icon"><use href="assets/icons.svg#close"></use></svg>
+                    </button>
+                </div>
+            </div>
+            
+            <div id="projectsGrid" class="projects-grid">
+                <!-- Projects will be dynamically loaded here -->
+                <div class="loading-message">Loading projects...</div>
+            </div>
+        </div>
+    </main>
+
+    <div id="projectModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="modalTitle">Project Title</h2>
+                <button class="close-btn" id="closeModal">
+                    <svg class="icon"><use href="assets/icons.svg#close"></use></svg>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="project-gallery">
+                    <div class="gallery-container">
+                        <button class="gallery-nav prev" id="prevImage">
+                            <svg class="icon"><use href="assets/icons.svg#arrow-left"></use></svg>
+                        </button>
+                        <div class="gallery-image-container" id="galleryImages">
+                            <!-- Images will be loaded here -->
+                        </div>
+                        <button class="gallery-nav next" id="nextImage">
+                            <svg class="icon"><use href="assets/icons.svg#arrow-right"></use></svg>
+                        </button>
+                    </div>
+                    <div class="gallery-indicators" id="galleryIndicators">
+                        <!-- Indicators will be loaded here -->
+                    </div>
+                </div>
+                
+                <div class="project-actions">
+                    <button id="downloadAllFiles" class="btn primary-btn">
+                        <svg class="icon"><use href="assets/icons.svg#download"></use></svg>
+                        Download All Files
+                    </button>
+                    
+                    <button id="editProject" class="btn secondary-btn admin-only hidden">
+                        <svg class="icon"><use href="assets/icons.svg#edit"></use></svg>
+                        Edit Project
+                    </button>
+                </div>
+                
+                <div class="description-section">
+                    <h3>Description</h3>
+                    <div class="project-description" id="modalDescription"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="profileModal" class="modal">
+        <div class="modal-content settings-modal">
+            <div class="modal-header">
+                <h2>Contact Me</h2>
+                <button class="close-btn" id="closeProfile">
+                    <svg class="icon"><use href="assets/icons.svg#close"></use></svg>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="profile-info">
+                    <div class="profile-header">
+                        <h3 id="profileName">John Doe</h3>
+                        <p id="profileProfession">Web Developer</p>
+                    </div>
+                    <div class="profile-bio">
+                        <p id="profileBio">I'm a passionate web developer with over 5 years of experience in building responsive and user-friendly websites and applications.</p>
+                    </div>
+                    <div class="profile-contact">
+                        <div class="contact-item">
+                            <svg class="icon"><use href="assets/icons.svg#mail"></use></svg>
+                            <a href="mailto:" id="profileEmail" class="contact-link">contact@example.com</a>
+                        </div>
+
+                    </div>
+                    <div class="social-media">
+                        <a href="#" class="social-icon" id="profileGithub">
+                            <svg class="icon"><use href="assets/icons.svg#github"></use></svg>
+                        </a>
+                        <a href="#" class="social-icon" id="profileInstagram">
+                            <svg class="icon"><use href="assets/icons.svg#instagram"></use></svg>
+                        </a>
+                        <a href="#" class="social-icon" id="profileYoutube">
+                            <svg class="icon"><use href="assets/icons.svg#youtube"></use></svg>
+                        </a>
+                        <a href="#" class="social-icon" id="profileThreads">
+                            <svg class="icon"><use href="assets/icons.svg#threads"></use></svg>
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- Edit profile form (visible only for admin) -->
+                <div class="edit-profile-section admin-only hidden">
+                    <button id="editProfileBtn" class="btn secondary-btn">
+                        <svg class="icon"><use href="assets/icons.svg#edit"></use></svg>
+                        Edit Profile
+                    </button>
+                    
+                    <form id="profileForm" class="profile-form hidden">
+                        <div class="form-group">
+                            <label for="inputName">Name</label>
+                            <input type="text" id="inputName" class="form-input" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="inputProfession">Profession</label>
+                            <input type="text" id="inputProfession" class="form-input" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="inputBio">Bio</label>
+                            <textarea id="inputBio" class="form-input" rows="4" required></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="inputEmail">Email</label>
+                            <input type="email" id="inputEmail" class="form-input">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="inputGithub">GitHub</label>
+                            <input type="text" id="inputGithub" class="form-input" placeholder="https://github.com/username">
+                        </div>
+                        <div class="form-group">
+                            <label for="inputInstagram">Instagram</label>
+                            <input type="text" id="inputInstagram" class="form-input" placeholder="https://instagram.com/username">
+                        </div>
+                        <div class="form-group">
+                            <label for="inputYoutube">YouTube</label>
+                            <input type="text" id="inputYoutube" class="form-input" placeholder="https://youtube.com/@channel">
+                        </div>
+                        <div class="form-group">
+                            <label for="inputThreads">Threads</label>
+                            <input type="text" id="inputThreads" class="form-input" placeholder="https://threads.net/@username">
+                        </div>
+                        <div class="form-actions">
+                            <button type="submit" class="btn primary-btn">
+                                <svg class="icon"><use href="assets/icons.svg#save"></use></svg>
+                                Save Profile
+                            </button>
+                            <button type="button" id="cancelProfileEdit" class="btn secondary-btn">
+                                <svg class="icon"><use href="assets/icons.svg#close"></use></svg>
+                                Cancel
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div id="settingsModal" class="modal">
+        <div class="modal-content settings-modal">
+            <div class="modal-header">
+                <h2>Settings</h2>
+                <button class="close-btn" id="closeSettings">
+                    <svg class="icon"><use href="assets/icons.svg#close"></use></svg>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="settings-section">
+                    <h3>Theme</h3>
+                    <div class="theme-options">
+                        <button class="theme-btn" data-theme="light">
+                            <svg class="icon"><use href="assets/icons.svg#sun"></use></svg>
+                            Light
+                        </button>
+                        <button class="theme-btn" data-theme="dark">
+                            <svg class="icon"><use href="assets/icons.svg#moon"></use></svg>
+                            Dark
+                        </button>
+                        <button class="theme-btn" data-theme="device">
+                            <svg class="icon"><use href="assets/icons.svg#device"></use></svg>
+                            Device Theme
+                        </button>
+                    </div>
+                </div>
+                <div class="settings-section">
+                    <h3>Admin Access</h3>
+                    <form onsubmit="event.preventDefault(); tryLogin();" class="admin-login" id="adminLoginForm">
+                        <input type="password" id="adminPassword" placeholder="Admin Pass" class="form-input">
+                        <button type="submit" id="loginBtn" class="btn primary-btn">
+                            <svg class="icon"><use href="assets/icons.svg#lock"></use></svg>
+                            Login
+                        </button>
+                    </form>
+                    
+                    <script>
+                        // Direct login function that doesn't depend on event listeners
+                        function tryLogin() {
+                            console.log('Direct login function called');
+                            const passwordInput = document.getElementById('adminPassword');
+                            const password = passwordInput ? passwordInput.value : '';
+                            
+                            // Hardcoded password for this demonstration
+                            if (password === "SoloLvl!ng_P@ss123") {
+                                console.log('Password correct');
+                                
+                                // Update UI
+                                const adminLoginForm = document.getElementById('adminLoginForm');
+                                const adminControls = document.getElementById('adminControls');
+                                
+                                if (adminLoginForm) adminLoginForm.classList.add('hidden');
+                                if (adminControls) adminControls.classList.remove('hidden');
+                                
+                                // Show admin-only elements
+                                document.querySelectorAll('.admin-only').forEach(el => el.classList.remove('hidden'));
+                                
+                                // Store admin status
+                                localStorage.setItem('adminToken', 'admin_logged_in');
+                                
+                                // Clear password field
+                                if (passwordInput) passwordInput.value = '';
+                                
+                                // Update admin state if AdminManager is available
+                                if (window.AdminManager) {
+                                    window.AdminManager.adminLoggedIn = true;
+                                }
+                            } else {
+                                console.log('Password incorrect');
+                                // Always use toast notification
+                                Toast.error('Incorrect password');
+                            }
+                        }
+                    </script>
+                    <div id="adminControls" class="admin-controls hidden">
+                        <p class="success-message">Admin access granted</p>
+                        <button id="addProjectBtn" class="btn primary-btn" onclick="openAddProject()">
+                            <svg class="icon"><use href="assets/icons.svg#plus"></use></svg>
+                            Add New Project
+                        </button>
+                        
+                        <script>
+                            // Direct function to open add project modal
+                            function openAddProject() {
+                                console.log('Opening add project modal');
+                                
+                                // Get the modal
+                                const modal = document.getElementById('editProjectModal');
+                                
+                                if (modal) {
+                                    // Reset form
+                                    const form = document.getElementById('projectForm');
+                                    if (form) form.reset();
+                                    
+                                    // Set title
+                                    const titleEl = document.getElementById('editModalTitle');
+                                    if (titleEl) titleEl.textContent = 'Add New Project';
+                                    
+                                    // Clear images
+                                    const imagesList = document.getElementById('imagesList');
+                                    if (imagesList) imagesList.innerHTML = '';
+                                    
+                                    // Set new project flag
+                                    if (form) form.dataset.newProject = 'true';
+                                    
+                                    // Hide delete button
+                                    const deleteBtn = document.getElementById('deleteProjectBtn');
+                                    if (deleteBtn) deleteBtn.classList.add('hidden');
+                                    
+                                    // Show modal
+                                    modal.classList.add('active');
+                                    document.body.style.overflow = 'hidden';
+                                    
+                                    // Add at least one image field (via AdminManager if available)
+                                    if (window.AdminManager && AdminManager.addImageField) {
+                                        AdminManager.addImageField();
+                                    }
+                                }
+                            }
+                        </script>
+                        <button id="logoutBtn" class="btn secondary-btn" onclick="tryLogout()">
+                            <svg class="icon"><use href="assets/icons.svg#logout"></use></svg>
+                            Logout
+                        </button>
+                        
+                        <script>
+                            // Direct logout function
+                            function tryLogout() {
+                                console.log('Direct logout function called');
+                                
+                                // Update UI
+                                const adminLoginForm = document.getElementById('adminLoginForm');
+                                const adminControls = document.getElementById('adminControls');
+                                
+                                if (adminLoginForm) adminLoginForm.classList.remove('hidden');
+                                if (adminControls) adminControls.classList.add('hidden');
+                                
+                                // Hide admin-only elements
+                                document.querySelectorAll('.admin-only').forEach(el => el.classList.add('hidden'));
+                                
+                                // Remove admin status
+                                localStorage.removeItem('adminToken');
+                                
+                                // Update admin state if AdminManager is available
+                                if (window.AdminManager) {
+                                    window.AdminManager.adminLoggedIn = false;
+                                }
+                            }
+                        </script>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="editProjectModal" class="modal">
+        <div class="modal-content edit-modal">
+            <div class="modal-header">
+                <h2 id="editModalTitle">Edit Project</h2>
+                <button class="close-btn" id="closeEditModal" onclick="closeEditModal()">
+                    <svg class="icon"><use href="assets/icons.svg#close"></use></svg>
+                </button>
+                
+                <script>
+                    // Function to close the edit modal
+                    function closeEditModal() {
+                        console.log('Closing edit modal');
+                        const modal = document.getElementById('editProjectModal');
+                        if (modal) {
+                            modal.classList.remove('active');
+                            document.body.style.overflow = '';
+                        }
+                    }
+                </script>
+            </div>
+            <div class="modal-body">
+                <form id="projectForm" class="project-form" onsubmit="saveProject(event)" enctype="multipart/form-data">
+                    <div class="form-group">
+                        <label for="projectTitle">Title</label>
+                        <input type="text" id="projectTitle" name="title" required class="form-input">
+                    </div>
+                    <div class="form-group">
+                        <label for="projectPreviewDescription">Preview Description (shown in cards, max 3 lines)</label>
+                        <textarea id="projectPreviewDescription" name="previewDescription" rows="3" class="form-input vertical-resize-only"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="projectDescription">Full Description</label>
+                        <textarea id="projectDescription" name="description" rows="5" required class="form-input vertical-resize-only"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>Preview Images</label>
+                        <div id="imagesList" class="images-list">
+                            <!-- Uploaded images will be shown here -->
+                        </div>
+                        <div class="upload-container">
+                            <label for="imageUpload" class="upload-label">Select Preview Images (Auto-uploads)</label>
+                            <input type="file" id="imageUpload" accept="image/*" class="file-input" multiple>
+                            <div id="imageUploadStatus" class="upload-status">Select files to upload</div>
+                        </div>
+                        
+                        <script>
+                            // Add event listener for auto-upload on file selection
+                            document.addEventListener('DOMContentLoaded', function() {
+                                const imageUploadInput = document.getElementById('imageUpload');
+                                if (imageUploadInput) {
+                                    imageUploadInput.addEventListener('change', function() {
+                                        uploadImages();
+                                    });
+                                }
+                            });
+                            
+                            // Function to upload multiple images
+                            async function uploadImages() {
+                                const fileInput = document.getElementById('imageUpload');
+                                const statusElement = document.getElementById('imageUploadStatus');
+                                
+                                if (!fileInput || !fileInput.files || fileInput.files.length === 0) {
+                                    if (statusElement) statusElement.textContent = 'No files selected';
+                                    return;
+                                }
+                                
+                                // Show upload status
+                                if (statusElement) {
+                                    statusElement.textContent = `Uploading ${fileInput.files.length} image(s)...`;
+                                    statusElement.classList.add('uploading');
+                                }
+                                
+                                const formData = new FormData();
+                                for (let i = 0; i < fileInput.files.length; i++) {
+                                    formData.append('images', fileInput.files[i]);
+                                }
+                                
+                                try {
+                                    const response = await fetch('/upload/images', {
+                                        method: 'POST',
+                                        body: formData
+                                    });
+                                    
+                                    const result = await response.json();
+                                    
+                                    if (result.success) {
+                                        // Add all uploaded images to the list
+                                        result.files.forEach(file => {
+                                            addImageField(file.filePath, file.fileName);
+                                        });
+                                        fileInput.value = ''; // Clear the file input
+                                        
+                                        // Update status
+                                        if (statusElement) {
+                                            statusElement.textContent = `${result.files.length} image(s) uploaded successfully!`;
+                                            statusElement.classList.remove('uploading');
+                                            statusElement.classList.add('success');
+                                            
+                                            // Reset status after a delay
+                                            setTimeout(() => {
+                                                statusElement.textContent = 'Select files to upload';
+                                                statusElement.classList.remove('success');
+                                            }, 3000);
+                                        }
+                                    } else {
+                                        if (statusElement) {
+                                            statusElement.textContent = 'Failed to upload: ' + (result.error || 'Unknown error');
+                                            statusElement.classList.remove('uploading');
+                                            statusElement.classList.add('error');
+                                        }
+                                    }
+                                } catch (error) {
+                                    console.error('Error uploading images:', error);
+                                    if (statusElement) {
+                                        statusElement.textContent = 'Error uploading images. Please try again.';
+                                        statusElement.classList.remove('uploading');
+                                        statusElement.classList.add('error');
+                                    }
+                                }
+                            }
+                        
+                            // Function to add an image field
+                            function addImageField(path, name = '') {
+                                console.log('Adding image field:', path);
+                                const imagesList = document.getElementById('imagesList');
+                                if (!imagesList) return;
+                                
+                                const inputGroup = document.createElement('div');
+                                inputGroup.className = 'image-input-group';
+                                
+                                // Create a preview if path exists
+                                let preview = '';
+                                if (path) {
+                                    preview = `<div class="image-preview"><img src="${path}" alt="${name || 'Preview'}"></div>`;
+                                }
+                                
+                                inputGroup.innerHTML = `
+                                    ${preview}
+                                    <div class="image-details">
+                                        <div class="image-path">${path}</div>
+                                        <div class="image-name">${name}</div>
+                                    </div>
+                                    <input type="hidden" class="image-path-input" value="${path}">
+                                    <button type="button" class="btn secondary-btn remove-image-btn">
+                                        <svg class="icon">
+                                            <use href="assets/icons.svg#trash"></use>
+                                        </svg>
+                                    </button>
+                                `;
+                                
+                                // Add remove button functionality
+                                const removeBtn = inputGroup.querySelector('.remove-image-btn');
+                                if (removeBtn) {
+                                    removeBtn.addEventListener('click', () => {
+                                        inputGroup.remove();
+                                    });
+                                }
+                                
+                                imagesList.appendChild(inputGroup);
+                            }
+                        </script>
+                    </div>
+                    <div class="form-group">
+                        <label>Project Files</label>
+                        <div id="projectFilesList" class="project-files-list">
+                            <!-- Uploaded project files will be shown here -->
+                        </div>
+                        <div class="upload-container">
+                            <label for="projectFilesUpload" class="upload-label">Select Project Files (Auto-uploads, Maximum 50)</label>
+                            <input type="file" id="projectFilesUpload" class="file-input" multiple>
+                            <div id="filesUploadStatus" class="upload-status">Select files to upload</div>
+                        </div>
+                        
+                        <script>
+                            // Add event listener for auto-upload on file selection
+                            document.addEventListener('DOMContentLoaded', function() {
+                                const projectFilesInput = document.getElementById('projectFilesUpload');
+                                if (projectFilesInput) {
+                                    projectFilesInput.addEventListener('change', function() {
+                                        uploadProjectFiles();
+                                    });
+                                }
+                            });
+                            
+                            // Function to upload multiple project files
+                            async function uploadProjectFiles() {
+                                const fileInput = document.getElementById('projectFilesUpload');
+                                const statusElement = document.getElementById('filesUploadStatus');
+                                
+                                if (!fileInput || !fileInput.files || fileInput.files.length === 0) {
+                                    if (statusElement) statusElement.textContent = 'No files selected';
+                                    return;
+                                }
+                                
+                                if (fileInput.files.length > 50) {
+                                    if (statusElement) {
+                                        statusElement.textContent = 'Too many files. Maximum allowed is 50.';
+                                        statusElement.classList.add('error');
+                                    }
+                                    return;
+                                }
+                                
+                                // Show upload status
+                                if (statusElement) {
+                                    statusElement.textContent = `Uploading ${fileInput.files.length} file(s)...`;
+                                    statusElement.classList.add('uploading');
+                                    statusElement.classList.remove('error', 'success');
+                                }
+                                
+                                const formData = new FormData();
+                                for (let i = 0; i < fileInput.files.length; i++) {
+                                    formData.append('projects', fileInput.files[i]);
+                                }
+                                
+                                try {
+                                    const response = await fetch('/upload/projects', {
+                                        method: 'POST',
+                                        body: formData
+                                    });
+                                    
+                                    const result = await response.json();
+                                    
+                                    if (result.success) {
+                                        // Add all uploaded project files to the list
+                                        result.files.forEach(file => {
+                                            addProjectFileField(file.filePath, file.fileName);
+                                        });
+                                        fileInput.value = ''; // Clear the file input
+                                        
+                                        // Update status
+                                        if (statusElement) {
+                                            statusElement.textContent = `${result.files.length} file(s) uploaded successfully!`;
+                                            statusElement.classList.remove('uploading');
+                                            statusElement.classList.add('success');
+                                            
+                                            // Reset status after a delay
+                                            setTimeout(() => {
+                                                statusElement.textContent = 'Select files to upload';
+                                                statusElement.classList.remove('success');
+                                            }, 3000);
+                                        }
+                                    } else {
+                                        if (statusElement) {
+                                            statusElement.textContent = 'Failed to upload: ' + (result.error || 'Unknown error');
+                                            statusElement.classList.remove('uploading');
+                                            statusElement.classList.add('error');
+                                        }
+                                    }
+                                } catch (error) {
+                                    console.error('Error uploading files:', error);
+                                    if (statusElement) {
+                                        statusElement.textContent = 'Error uploading files. Please try again.';
+                                        statusElement.classList.remove('uploading');
+                                        statusElement.classList.add('error');
+                                    }
+                                }
+                            }
+                            
+                            // Function to add a project file field
+                            function addProjectFileField(path, name = '') {
+                                console.log('Adding project file:', path);
+                                const projectFilesList = document.getElementById('projectFilesList');
+                                if (!projectFilesList) return;
+                                
+                                const fileGroup = document.createElement('div');
+                                fileGroup.className = 'project-file-group';
+                                
+                                fileGroup.innerHTML = `
+                                    <div class="file-info">
+                                        <div class="file-name">${name || path.split('/').pop()}</div>
+                                        <div class="file-path">${path}</div>
+                                    </div>
+                                    <input type="hidden" class="project-file-path-input" value="${path}">
+                                    <button type="button" class="btn secondary-btn remove-file-btn">
+                                        <svg class="icon">
+                                            <use href="assets/icons.svg#trash"></use>
+                                        </svg>
+                                    </button>
+                                `;
+                                
+                                // Add remove button functionality
+                                const removeBtn = fileGroup.querySelector('.remove-file-btn');
+                                if (removeBtn) {
+                                    removeBtn.addEventListener('click', () => {
+                                        fileGroup.remove();
+                                    });
+                                }
+                                
+                                projectFilesList.appendChild(fileGroup);
+                            }
+                        </script>
+                    </div>
+                    <div class="form-actions">
+                        <button type="submit" class="btn primary-btn">Save Project</button>
+                        <button type="button" id="deleteProjectBtn" class="btn danger-btn" onclick="deleteProject()">Delete Project</button>
+                    </div>
+                </form>
+                
+                <script>
+                    // Function to save a project
+                    function saveProject(event) {
+                        event.preventDefault();
+                        console.log('Saving project');
+                        
+                        // Get form data
+                        const form = document.getElementById('projectForm');
+                        if (!form) return;
+                        
+                        const title = document.getElementById('projectTitle').value;
+                        const previewDescription = document.getElementById('projectPreviewDescription').value;
+                        const description = document.getElementById('projectDescription').value;
+                        
+                        // Get image paths
+                        const imageInputs = form.querySelectorAll('.image-path-input');
+                        const images = [];
+                        
+                        imageInputs.forEach(input => {
+                            if (input.value.trim()) {
+                                images.push(input.value.trim());
+                            }
+                        });
+                        
+                        // Get project file paths
+                        const fileInputs = form.querySelectorAll('.project-file-path-input');
+                        const files = [];
+                        
+                        fileInputs.forEach(input => {
+                            if (input.value.trim()) {
+                                files.push({
+                                    path: input.value.trim(),
+                                    name: input.closest('.project-file-group').querySelector('.file-name').textContent
+                                });
+                            }
+                        });
+                        
+                        // Create project object
+                        const project = {
+                            title,
+                            previewDescription,
+                            description,
+                            images,
+                            files
+                        };
+                        
+                        // Check if adding new or updating existing
+                        const isNewProject = form.dataset.newProject === 'true';
+                        
+                        if (isNewProject) {
+                            // Add new project
+                            if (window.ProjectsManager && ProjectsManager.addProject) {
+                                ProjectsManager.addProject(project);
+                            } else {
+                                console.error('ProjectsManager not available');
+                            }
+                        } else {
+                            // Update existing project
+                            const index = parseInt(form.dataset.projectIndex);
+                            if (window.ProjectsManager && ProjectsManager.updateProject) {
+                                ProjectsManager.updateProject(index, project);
+                            } else {
+                                console.error('ProjectsManager not available');
+                            }
+                        }
+                        
+                        // Close the modal
+                        closeEditModal();
+                    }
+                    
+                    // Function to delete a project
+                    function deleteProject() {
+                        console.log('Deleting project');
+                        if (confirm('Are you sure you want to delete this project?')) {
+                            const form = document.getElementById('projectForm');
+                            if (!form) return;
+                            
+                            const index = parseInt(form.dataset.projectIndex);
+                            
+                            if (window.ProjectsManager && ProjectsManager.deleteProject) {
+                                ProjectsManager.deleteProject(index);
+                            } else {
+                                console.error('ProjectsManager not available');
+                            }
+                            closeEditModal();
+                        }
+                    }
+                </script>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <div class="container">
+            <p>&copy; <span id="currentYear"></span> My Projects Portfolio</p>
+        </div>
+    </footer>
+
+    <script src="js/admin.js"></script>
+    <script src="js/themes.js"></script>
+    <script src="js/projects.js"></script>
+    <script src="js/main.js"></script>
+</body>
+</html>
